@@ -85,6 +85,7 @@ namespace Conductor
             services.AddWorkflow(cfg =>
             {
                 cfg.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
+                
                 if (!string.IsNullOrEmpty(redisConnectionStr))
                 {
                     cfg.UseRedisLocking(redisConnectionStr);
@@ -95,7 +96,7 @@ namespace Conductor
             services.ConfigureScripting();
             services.AddSteps();
             services.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
-
+            
             if (string.IsNullOrEmpty(redisConnectionStr))
                 services.AddSingleton<IClusterBackplane, LocalBackplane>();
             else
