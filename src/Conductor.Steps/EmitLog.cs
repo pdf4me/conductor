@@ -26,4 +26,4 @@ namespace Conductor.Steps
             return Task.FromResult(ExecutionResult.Next());
         }
     }
-}
+} 
