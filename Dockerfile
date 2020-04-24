@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
-ENV DBHOST mongodb://10.225.2.96:27017/
+ENV DBHOST mongodb+srv://wfuser:logo12Q2@pdf4mecluster-zhvoy.azure.mongodb.net/test?retryWrites=true&w=majority
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
