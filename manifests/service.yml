@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: pdfmeconductor
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 443 
+    selector:
+        app: pdfmeconductor
