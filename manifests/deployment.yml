@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: pdfmeconductor 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pdfmeconductor 
+    spec:
+      containers:
+        - name: pdfmeconductor 
+          image: pdf4me.azurecr.io/pdfmeconductor
+          ports:
+          - containerPort: 443
