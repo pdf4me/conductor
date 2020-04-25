@@ -123,13 +123,25 @@ namespace Conductor
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
-                        
+
+            app.Use(async (context, next) =>
+            {
+                Console.WriteLine($"method called with path {context.Request.Method}");
+                await next.Invoke();
+                Console.WriteLine($"method called with path {context.Request.Method}");
+            }
+
+                 );
+
             app.UseAuthentication();
             //app.UseHttpsRedirection();
             app.UseMvc(cfg =>
             {
               //  cfg.
             });
+
+
+
             app.UseRouting();
             //app.UseMvcWithDefaultRoute();
 
@@ -137,6 +149,9 @@ namespace Conductor
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+         
+
 
             var host = app.ApplicationServices.GetService<IWorkflowHost>();
             var defService = app.ApplicationServices.GetService<IDefinitionService>();
