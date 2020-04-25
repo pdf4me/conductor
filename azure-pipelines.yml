@@ -11,12 +11,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '8d735802-218e-4e80-8132-12e27398c989'
+  dockerRegistryServiceConnection: 'dc2a0188-e524-4fa4-91b3-277ca7cb3a28'
   imageRepository: 'pdfmeconductor'
   containerRegistry: 'pdf4me.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'pdf4me1325fb29-auth'
+  imagePullSecret: 'pdf4me56957064-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -53,7 +53,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'pdf4meconductor.dev'
+    environment: 'pdf4meconductor-1213.dev'
     strategy:
       runOnce:
         deploy:
