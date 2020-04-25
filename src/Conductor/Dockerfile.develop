@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:80
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["src/Conductor.Domain.Scripting/Conductor.Domain.Scripting.csproj", "src/Conductor.Domain.Scripting/"]
+COPY ["src/Conductor.Domain/Conductor.Domain.csproj", "src/Conductor.Domain/"]
+COPY ["src/Conductor.Steps/Conductor.Steps.csproj", "src/Conductor.Steps/"]
+COPY ["src/Conductor.Storage/Conductor.Storage.csproj", "src/Conductor.Storage/"]
+COPY ["src/Conductor/Conductor.csproj", "src/Conductor/"]
+
+RUN dotnet restore "src/Conductor/Conductor.csproj"
+COPY . .
+WORKDIR "/src/src/Conductor"
+RUN dotnet build --no-restore "Conductor.csproj" -c $BUILD_CONFIGURATION
+
+RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION --" > /entrypoint.sh
+
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

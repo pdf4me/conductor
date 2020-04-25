@@ -30,6 +30,13 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/values"
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces",
+      "launchBrowser": true,
+      "resourceGroup": "dev-rg-aks",
+      "aksName": "devaks",
+      "subscriptionId": "f6c7103a-eea0-4056-847c-91ba19aa989a"
     }
   }
 }
