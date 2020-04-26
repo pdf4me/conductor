@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}pdf4conductor
     build:
       context: .
-      dockerfile: Conductor/Dockerfile
+      dockerfile: Dockerfile
