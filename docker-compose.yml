@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}pdf4meconductor
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile

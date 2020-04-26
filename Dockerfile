@@ -6,10 +6,11 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
+
 COPY src .
 RUN dotnet restore "Conductor/Conductor.csproj"
 COPY . .
-WORKDIR "/src/Conductor"
+WORKDIR "/src/src/Conductor"
 RUN dotnet build "Conductor.csproj" -c Release -o /app
 
 FROM build AS publish
