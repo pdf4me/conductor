@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   conductor:
-    image: ${DOCKER_REGISTRY-}pdf4conductor
+    image: ${DOCKER_REGISTRY-}pdf4meconductor
     build:
       context: .
       dockerfile: Dockerfile
