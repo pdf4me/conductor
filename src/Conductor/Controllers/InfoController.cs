@@ -26,7 +26,7 @@ namespace Conductor.Controllers
                 StartTime = process.StartTime,
                 WorkingSet = process.WorkingSet64,
                 Version = version.ProductVersion,
-                OSVersion = Environment.OSVersion.VersionString
+                OSVersion = "test"//Environment.OSVersion.VersionString
             };
         }
     }
