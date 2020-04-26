@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+build:
+  id: 0
 image:
   repository: pdf4me.azurecr.io
   pullPolicy: IfNotPresent
