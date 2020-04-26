@@ -12,7 +12,7 @@ COPY ["src/Conductor/Conductor.csproj", "src/Conductor/"]
 
 RUN dotnet restore "src/Conductor/Conductor.csproj"
 COPY . .
-WORKDIR "/src/src/Conductor"
+WORKDIR "/src/Conductor"
 RUN dotnet build "Conductor.csproj" -c Release -o /app/build
 
 FROM build AS publish
