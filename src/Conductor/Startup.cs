@@ -46,6 +46,11 @@ namespace Conductor
             if (string.IsNullOrEmpty(dbConnectionStr))
                 dbConnectionStr = Configuration.GetValue<string>("DbConnectionString");
 
+            
+            var dbConnectionStrSql = Configuration.GetValue<string>(" DbConnectionStringSql");
+
+           
+
             var redisConnectionStr = EnvironmentVariables.Redis;
             if (string.IsNullOrEmpty(redisConnectionStr))
                 redisConnectionStr = Configuration.GetValue<string>("RedisConnectionString");
@@ -84,7 +89,8 @@ namespace Conductor
 
             services.AddWorkflow(cfg =>
             {
-                cfg.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
+                cfg.UseSqlServer("DbConnectionStringSql", true, true);
+               // cfg.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
                 
                 if (!string.IsNullOrEmpty(redisConnectionStr))
                 {
