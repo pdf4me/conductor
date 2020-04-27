@@ -47,7 +47,7 @@ namespace Conductor
                 dbConnectionStr = Configuration.GetValue<string>("DbConnectionString");
 
             
-            var dbConnectionStrSql = Configuration.GetValue<string>(" DbConnectionStringSql");
+            var dbConnectionStrSql = Configuration.GetValue<string>("DbConnectionStringSql");
 
            
 
@@ -89,7 +89,7 @@ namespace Conductor
 
             services.AddWorkflow(cfg =>
             {
-                cfg.UseSqlServer("DbConnectionStringSql", true, true);
+                cfg.UseSqlServer(dbConnectionStrSql, true, true);
                // cfg.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
                 
                 if (!string.IsNullOrEmpty(redisConnectionStr))
