@@ -4,8 +4,12 @@
 
 replicaCount: 1
 
+env:
+  aspnet_env: ""
+
 build:
   id: 0
+  
 image:
   repository: pdf4me.azurecr.io
   pullPolicy: IfNotPresent

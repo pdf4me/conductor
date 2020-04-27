@@ -12,5 +12,7 @@ namespace Conductor.Models
         public string Version { get; set; }
         public string OSVersion { get; set; }
         public long WorkingSet { get; set; }
+        public string Enviornment { get; set; }
+        public string BuildId { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Conductor.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Conductor.Controllers
 {
@@ -14,6 +15,12 @@ namespace Conductor.Controllers
     [ApiController]    
     public class InfoController : ControllerBase
     {
+        private IConfiguration configuration; 
+
+        public InfoController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
         [HttpGet]        
         public ActionResult<DiagnosticInfo> Get()
         {
@@ -26,7 +33,10 @@ namespace Conductor.Controllers
                 StartTime = process.StartTime,
                 WorkingSet = process.WorkingSet64,
                 Version = version.ProductVersion,
-                OSVersion = "test3"//Environment.OSVersion.VersionString
+                OSVersion = Environment.OSVersion.VersionString,
+                Enviornment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+                BuildId = Environment.GetEnvironmentVariable("Build_Id")
+
             };
         }
     }
