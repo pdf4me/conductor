@@ -14,7 +14,7 @@ image:
   repository: pdf4me.azurecr.io
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: pdf4me-conductor-api-api
+  tag: pdf4me-conductor-api
 
 imagePullSecrets: []
 nameOverride: ""
