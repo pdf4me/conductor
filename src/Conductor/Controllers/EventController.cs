@@ -25,7 +25,7 @@ namespace Conductor.Controllers
             _workflowController = workflowController;
         }
 
-        [Authorize(Policy = Policies.Controller)]
+        //[Authorize(Policy = Policies.Controller)]
         [HttpPost("{name}/{key}")]
         public async Task Post(string name, string key, [FromBody] object data)
         {

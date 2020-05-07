@@ -27,6 +27,10 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using Conductor.Auth;
 using Conductor.Middleware;
+using Pdf4meWf;
+using WorkflowCore.Models;
+using Pdf4me.DalCore.Storage;
+using Pdf4me.DalCore.Extensions;
 
 namespace Conductor
 {
@@ -115,6 +119,15 @@ namespace Conductor
 
             services.AddSingleton<IMapper>(x => new Mapper(config));
 
+            services.AddTransient<CompressStartWithUiMessage>();
+
+            var dbConEf = "Server=u1yde9ztmq.database.windows.net;Database=Pdf4meDB;user id=azAdminIAMDB;password=6aad3kzcgNt7oGDiNhje";
+            StorageConfig storageConfig = new StorageConfig()
+            {
+                AccountKey = "RxbhMyOFnx1YjCwmnbpIdhc1GHlGzGUAOvq7ACpfntIpej6isqJo1W3W4mto+WN6FWuna/GtNcOVHDQo0lgplw==",
+                AccountName = "pdf4medev"
+            };
+            services.AddPdf4meDalCore(dbConEf, storageConfig);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -163,6 +176,12 @@ namespace Conductor
             var defService = app.ApplicationServices.GetService<IDefinitionService>();
             var backplane = app.ApplicationServices.GetService<IClusterBackplane>();
             defService.LoadDefinitionsFromStorage();
+
+            // Register pdf4me Built-in Workflows
+            host.RegisterWorkflow<CompressJobWorkflow, CompressJobData>();
+
+            host.OnStepError += StepErrorEventHandler;
+
             backplane.Start();
             host.Start();
             applicationLifetime.ApplicationStopped.Register(() =>
@@ -170,6 +189,11 @@ namespace Conductor
                 host.Stop();
                 backplane.Stop();
             });
+        }
+
+        public static void StepErrorEventHandler(WorkflowInstance workflow, WorkflowStep step, Exception exception)
+        {
+            string exMsg = exception.Message;
         }
     }
 }
