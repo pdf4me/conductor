@@ -22,7 +22,7 @@ using NewtonJsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace Conductor.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class Pdf4meController : ControllerBase
