@@ -5,10 +5,10 @@
 replicaCount: 1
 
 env:
-  aspnet_env: ""
+  aspnet_env: "dev"
 
 build:
-  id: 0
+  id: 40187
   
 image:
   repository: pdf4me.azurecr.io
