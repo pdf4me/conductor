@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.10.1" />
-    <PackageReference Include="WorkflowCore" Version="3.2.506.1" />
+    <PackageReference Include="WorkflowCore" Version="3.2.507.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -55,6 +55,10 @@ namespace Conductor.Controllers
             {
                 workflowData = NewtonJsonConvert.DeserializeObject<CompressJobData>(contentReq);
             }
+            else if (id.StartsWith(WfFileInWorkflow.WorkflowId))
+            {
+                workflowData = NewtonJsonConvert.DeserializeObject<WfFileInData>(contentReq);
+            }
 
             var instanceId = await _workflowController.StartWorkflow(id, workflowData);
             var result = await _persistenceProvider.GetWorkflowInstance(instanceId);
