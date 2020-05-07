@@ -1,4 +1,4 @@
-# Default values for pdf4me-conductor.
+# Default values for pdf4me-conductor-api.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -14,7 +14,7 @@ image:
   repository: pdf4me.azurecr.io
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart version.
-  tag: pdf4meconductor
+  tag: pdf4me-conductor-api-api
 
 imagePullSecrets: []
 nameOverride: ""

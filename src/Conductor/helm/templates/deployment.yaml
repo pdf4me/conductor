@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "pdf4me-conductor.fullname" . }}
+  name: {{ include "pdf4me-conductor-api.fullname" . }}
   labels:
-    {{- include "pdf4me-conductor.labels" . | nindent 4 }}
+    {{- include "pdf4me-conductor-api.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "pdf4me-conductor.selectorLabels" . | nindent 6 }}
+      {{- include "pdf4me-conductor-api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "pdf4me-conductor.selectorLabels" . | nindent 8 }}
+        {{- include "pdf4me-conductor-api.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "pdf4me-conductor.serviceAccountName" . }}
+      serviceAccountName: {{ include "pdf4me-conductor-api.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
