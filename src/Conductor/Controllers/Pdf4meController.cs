@@ -50,17 +50,20 @@ namespace Conductor.Controllers
             }
 
             object workflowData = contentReq;
+            string workflowId = null;
 
             if (id.Equals(CompressJobWorkflow.WorkflowId))
             {
+                workflowId = CompressJobWorkflow.WorkflowId;
                 workflowData = NewtonJsonConvert.DeserializeObject<CompressJobData>(contentReq);
             }
             else if (id.StartsWith(WfFileInWorkflow.WorkflowId))
             {
+                workflowId = WfFileInWorkflow.WorkflowId;
                 workflowData = NewtonJsonConvert.DeserializeObject<WfFileInData>(contentReq);
             }
 
-            var instanceId = await _workflowController.StartWorkflow(id, workflowData);
+            var instanceId = await _workflowController.StartWorkflow(workflowId, workflowData);
             var result = await _persistenceProvider.GetWorkflowInstance(instanceId);
 
             return Created(instanceId, _mapper.Map<WorkflowInstance>(result));

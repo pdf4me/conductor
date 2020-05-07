@@ -121,6 +121,7 @@ namespace Conductor
 
             services.AddTransient<CompressStartWithUiMessage>();
 
+
             var dbConEf = "Server=u1yde9ztmq.database.windows.net;Database=Pdf4meDB;user id=azAdminIAMDB;password=6aad3kzcgNt7oGDiNhje";
             StorageConfig storageConfig = new StorageConfig()
             {
@@ -179,6 +180,7 @@ namespace Conductor
 
             // Register pdf4me Built-in Workflows
             host.RegisterWorkflow<CompressJobWorkflow, CompressJobData>();
+            host.RegisterWorkflow<WfFileInWorkflow, WfFileInData>();
 
             host.OnStepError += StepErrorEventHandler;
 
