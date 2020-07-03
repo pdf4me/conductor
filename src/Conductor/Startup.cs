@@ -31,6 +31,9 @@ using Pdf4meWf;
 using WorkflowCore.Models;
 using Pdf4me.DalCore.Storage;
 using Pdf4me.DalCore.Extensions;
+using Pdf4me.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
+using Conductor.Pdf4me;
 
 namespace Conductor
 {
@@ -40,6 +43,9 @@ namespace Conductor
         {
             Configuration = configuration;
             //System.Reflection.Assembly.GetEntryAssembly().
+
+
+
         }
 
         public IConfiguration Configuration { get; }
@@ -119,6 +125,7 @@ namespace Conductor
 
             services.AddSingleton<IMapper>(x => new Mapper(config));
 
+            services.AddTransient<SaveFilesToAzureStorageStep>();
             services.AddTransient<CompressStartWithUiMessage>();
 
 
@@ -129,6 +136,7 @@ namespace Conductor
                 AccountName = "pdf4medev"
             };
             services.AddPdf4meDalCore(dbConEf, storageConfig);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -181,6 +189,8 @@ namespace Conductor
             // Register pdf4me Built-in Workflows
             host.RegisterWorkflow<CompressJobWorkflow, CompressJobData>();
             host.RegisterWorkflow<WfFileInWorkflow, WfFileInData>();
+            
+            host.RegisterWorkflow<Test01UserWorkflow, Pdf4meWorkflowData>();
 
             host.OnStepError += StepErrorEventHandler;
 
@@ -191,6 +201,13 @@ namespace Conductor
                 host.Stop();
                 backplane.Stop();
             });
+
+
+
+            var msgHandler = new Pdf4meMessageHandler(host);
+            Pdf4meBusFactory.Instance.SetServiceBusConnection(Configuration.GetValue<string>("ServiceBus"));
+            Pdf4meBusFactory.Instance.RegisterQueueMessageHandler("wfexecution", msgHandler.Pdf4meActionHandlerAsync);
+
         }
 
         public static void StepErrorEventHandler(WorkflowInstance workflow, WorkflowStep step, Exception exception)

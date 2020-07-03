@@ -62,6 +62,14 @@ namespace Conductor.Controllers
                 workflowId = WfFileInWorkflow.WorkflowId;
                 workflowData = NewtonJsonConvert.DeserializeObject<WfFileInData>(contentReq);
             }
+            else if (id.StartsWith(Test01UserWorkflow.WorkflowId))
+            {
+                var wfEvent = Newtonsoft.Json.JsonConvert.DeserializeObject<Pdf4meWorkflowEvent>(contentReq);
+                workflowData = new Pdf4meWorkflowData() { WorkflowEvent = wfEvent };
+
+                workflowId = Test01UserWorkflow.WorkflowId;
+                //workflowData = NewtonJsonConvert.DeserializeObject<WfFileInData>(contentReq);
+            }
 
             var instanceId = await _workflowController.StartWorkflow(workflowId, workflowData);
             var result = await _persistenceProvider.GetWorkflowInstance(instanceId);
