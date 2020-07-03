@@ -127,6 +127,7 @@ namespace Conductor
 
             services.AddTransient<SaveFilesToAzureStorageStep>();
             services.AddTransient<CompressStartWithUiMessage>();
+            services.AddTransient<Pdf4meWorkflowEventStep>();
 
 
             var dbConEf = "Server=u1yde9ztmq.database.windows.net;Database=Pdf4meDB;user id=azAdminIAMDB;password=6aad3kzcgNt7oGDiNhje";
