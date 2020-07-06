@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using MongoDB.Bson.IO;
 using Newtonsoft.Json.Linq;
+using Pdf4me.Common.AiLogging;
 using Pdf4meWf;
 using WorkflowCore.Interface;
 using NewtonJsonConvert = Newtonsoft.Json.JsonConvert;
@@ -43,11 +44,16 @@ namespace Conductor.Controllers
         //[Authorize(Policy = Policies.Controller)]
         public async Task<ActionResult<WorkflowInstance>> StartWorkflow(string id)
         {
+           
+
             string contentReq = null;
             using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
             {
                 contentReq = await reader.ReadToEndAsync();
             }
+
+            var logTrace = new LogTrace();
+            AiLogger.LogInfo(logTrace, "Workflow Start: " + contentReq);
 
             object workflowData = contentReq;
             string workflowId = null;

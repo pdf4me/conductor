@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using Pdf4me.Common.AiLogging;
 using WorkflowCore.Interface;
 
 namespace Conductor.Controllers
@@ -33,9 +34,12 @@ namespace Conductor.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = Policies.Viewer)]
+        //[Authorize(Policy = Policies.Viewer)]
         public async Task<ActionResult<WorkflowInstance>> Get(string id)
         {
+            var logTrace = new LogTrace();
+            AiLogger.LogInfo(logTrace, "Workflow Get: " + id);
+
             var result = await _persistenceProvider.GetWorkflowInstance(id);
             if (result == null)
                 return NotFound();
