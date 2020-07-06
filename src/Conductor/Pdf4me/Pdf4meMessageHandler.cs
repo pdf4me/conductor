@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pdf4me.Common.AiLogging;
 using Pdf4me.DataContract;
 using Pdf4me.ServiceBus;
 using System;
@@ -23,12 +24,23 @@ namespace Conductor.Pdf4me
 
         public async Task Pdf4meActionHandlerAsync(ProcessingMessage message, CancellationToken token)
         {
+            var logTrace = new LogTrace();
 
-            var msgId = message.MessageId;
+            try
+            {                
+                AiLogger.LogInfo(logTrace, "WfMessage to execute: " + JsonConvert.SerializeObject(message));
 
-            var docPluginRes = JsonConvert.DeserializeObject<DocPluginRes>(message.MessageBody);
+                var msgId = message.MessageId;
 
-            await _wfHost.PublishEvent(docPluginRes.WfEventName, docPluginRes.WfEventKey, message.MessageBody);
+                var docPluginRes = JsonConvert.DeserializeObject<DocPluginRes>(message.MessageBody);
+
+                await _wfHost.PublishEvent(docPluginRes.WfEventName, docPluginRes.WfEventKey, message.MessageBody);
+
+                AiLogger.LogInfo(logTrace, "WfMessage executed!");
+            }catch(Exception e)
+            {
+                AiLogger.LogException(logTrace, e);
+            }
 
         }
 

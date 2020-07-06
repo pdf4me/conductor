@@ -34,6 +34,7 @@ using Pdf4me.DalCore.Extensions;
 using Pdf4me.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Conductor.Pdf4me;
+using Pdf4me.Common.AiLogging;
 
 namespace Conductor
 {
@@ -203,7 +204,9 @@ namespace Conductor
                 backplane.Stop();
             });
 
+            AiLogger.Instance.Init(Configuration.GetValue<string>("AppInsightKey"), "Pdf4meWorkflow");
 
+            AiLogger.LogInfo(new LogTrace(), "Init AiLogger for Pdf4meWorkflow : ");
 
             var msgHandler = new Pdf4meMessageHandler(host);
             Pdf4meBusFactory.Instance.SetServiceBusConnection(Configuration.GetValue<string>("ServiceBus"));
