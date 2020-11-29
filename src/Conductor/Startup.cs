@@ -35,6 +35,8 @@ using Pdf4me.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Conductor.Pdf4me;
 using Pdf4me.Common.AiLogging;
+using Pdf4meWf.BaseModel;
+using Pdf4meWf.ML;
 
 namespace Conductor
 {
@@ -53,18 +55,18 @@ namespace Conductor
         
         public void ConfigureServices(IServiceCollection services)
         {
-            var dbConnectionStr = EnvironmentVariables.DbHost;
-            if (string.IsNullOrEmpty(dbConnectionStr))
-                dbConnectionStr = Configuration.GetValue<string>("DbConnectionString");
+            //var dbConnectionStr = EnvironmentVariables.DbHost;
+            //if (string.IsNullOrEmpty(dbConnectionStr))
+            //    dbConnectionStr = Configuration.GetValue<string>("DbConnectionString");
 
             
             var dbConnectionStrSql = Configuration.GetValue<string>("DbConnectionStringSql");
 
            
 
-            var redisConnectionStr = EnvironmentVariables.Redis;
-            if (string.IsNullOrEmpty(redisConnectionStr))
-                redisConnectionStr = Configuration.GetValue<string>("RedisConnectionString");
+            //var redisConnectionStr = EnvironmentVariables.Redis;
+            //if (string.IsNullOrEmpty(redisConnectionStr))
+            //    redisConnectionStr = Configuration.GetValue<string>("RedisConnectionString");
 
             var authEnabled = false;
             var authEnabledStr = EnvironmentVariables.Auth;
@@ -103,21 +105,21 @@ namespace Conductor
                 cfg.UseSqlServer(dbConnectionStrSql, true, true);
                // cfg.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
                 
-                if (!string.IsNullOrEmpty(redisConnectionStr))
-                {
-                    cfg.UseRedisLocking(redisConnectionStr);
-                    cfg.UseRedisQueues(redisConnectionStr, "conductor");
-                }
+                //if (!string.IsNullOrEmpty(redisConnectionStr))
+                //{
+                //    cfg.UseRedisLocking(redisConnectionStr);
+                //    cfg.UseRedisQueues(redisConnectionStr, "conductor");
+                //}
             });
             services.ConfigureDomainServices();
             services.ConfigureScripting();
             services.AddSteps();
-            services.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
+            //services.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
             
-            if (string.IsNullOrEmpty(redisConnectionStr))
-                services.AddSingleton<IClusterBackplane, LocalBackplane>();
-            else
-                services.AddSingleton<IClusterBackplane>(sp => new RedisBackplane(redisConnectionStr, "conductor", sp.GetService<IDefinitionRepository>(), sp.GetService<IWorkflowLoader>(), sp.GetService<ILoggerFactory>()));
+            //if (string.IsNullOrEmpty(redisConnectionStr))
+            //    services.AddSingleton<IClusterBackplane, LocalBackplane>();
+            //else
+            //    services.AddSingleton<IClusterBackplane>(sp => new RedisBackplane(redisConnectionStr, "conductor", sp.GetService<IDefinitionRepository>(), sp.GetService<IWorkflowLoader>(), sp.GetService<ILoggerFactory>()));
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -126,9 +128,11 @@ namespace Conductor
 
             services.AddSingleton<IMapper>(x => new Mapper(config));
 
-            services.AddTransient<SaveFilesToAzureStorageStep>();
             services.AddTransient<CompressStartWithUiMessage>();
+            services.AddTransient<SaveFilesToAzureStorageStep>();
             services.AddTransient<Pdf4meWorkflowEventStep>();
+            services.AddTransient<Pdf4meDynamicWorkflowEventStep>();
+            services.AddTransient<StepInitMLWorkflow>();
 
 
             var dbConEf = "Server=u1yde9ztmq.database.windows.net;Database=Pdf4meDB;user id=azAdminIAMDB;password=6aad3kzcgNt7oGDiNhje";
@@ -189,10 +193,15 @@ namespace Conductor
             defService.LoadDefinitionsFromStorage();
 
             // Register pdf4me Built-in Workflows
+            //Pdf4meWorkflowRegistration.RegisterPdf4meServices(services);
+            //Pdf4meWorkflowRegistration.RegisterPdf4meServices(services);
+
             host.RegisterWorkflow<CompressJobWorkflow, CompressJobData>();
+            host.RegisterWorkflow<CompressUserWorkflow, CompressData>();
             host.RegisterWorkflow<WfFileInWorkflow, WfFileInData>();
-            
             host.RegisterWorkflow<Test01UserWorkflow, Pdf4meWorkflowData>();
+            host.RegisterWorkflow<WorkflowDocClassGenModel, MLWorkflowData>();
+                        
 
             host.OnStepError += StepErrorEventHandler;
 

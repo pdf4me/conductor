@@ -21,6 +21,11 @@ namespace Conductor.Domain.Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<WorkflowDefinition> GetAllDefinitions()
+        {
+            throw new NotImplementedException();
+        }
+
         public WorkflowDefinition GetDefinition(string workflowId, int? version = null)
         {
             if (version.HasValue)
