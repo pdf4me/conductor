@@ -21,7 +21,7 @@ namespace Conductor.Controllers
         private readonly IWorkflowController _workflowController;
 
         public EventController(IWorkflowController workflowController)
-        {
+        { 
             _workflowController = workflowController;
         }
 
