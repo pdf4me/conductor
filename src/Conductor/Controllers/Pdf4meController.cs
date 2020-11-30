@@ -63,18 +63,25 @@ namespace Conductor.Controllers
                 workflowId = CompressJobWorkflow.WorkflowId;
                 workflowData = NewtonJsonConvert.DeserializeObject<CompressJobData>(contentReq);
             }
-            else if (id.StartsWith(WfFileInWorkflow.WorkflowId))
+            else if (id.Equals(WfFileInWorkflow.WorkflowId))
             {
                 workflowId = WfFileInWorkflow.WorkflowId;
                 workflowData = NewtonJsonConvert.DeserializeObject<WfFileInData>(contentReq);
             }
-            else if (id.StartsWith(Test01UserWorkflow.WorkflowId))
+            else if (id.Equals(Test01UserWorkflow.WorkflowId))
             {
                 var wfEvent = Newtonsoft.Json.JsonConvert.DeserializeObject<Pdf4meWorkflowEvent>(contentReq);
                 workflowData = new Pdf4meWorkflowData() { WorkflowEvent = wfEvent };
 
                 workflowId = Test01UserWorkflow.WorkflowId;
                 //workflowData = NewtonJsonConvert.DeserializeObject<WfFileInData>(contentReq);
+            }
+            else
+            {
+                var wfEvent = Newtonsoft.Json.JsonConvert.DeserializeObject<Pdf4meWorkflowEvent>(contentReq);
+                workflowData = new Pdf4meWorkflowData() { WorkflowEvent = wfEvent };
+
+                workflowId = id;
             }
 
             var instanceId = await _workflowController.StartWorkflow(workflowId, workflowData);
