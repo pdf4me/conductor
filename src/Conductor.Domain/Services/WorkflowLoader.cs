@@ -40,7 +40,7 @@ namespace Conductor.Domain.Services
         private WorkflowDefinition Convert(Definition source)
         {
             var dataType = typeof(ExpandoObject);
-            
+
             var result = new WorkflowDefinition
             {
                 Id = source.Id,
@@ -196,7 +196,7 @@ namespace Conductor.Domain.Services
                 throw new ArgumentException($"Unknown type for input {input.Key} on {source.Id}");
             }
         }
-        
+
         private void AttachOutputs(Step source, Type dataType, Type stepType, WorkflowStep step)
         {
             foreach (var output in source.Outputs)
@@ -214,12 +214,12 @@ namespace Conductor.Domain.Services
                 step.Outputs.Add(new ActionParameter<IStepBody, object>(acn));
             }
         }
-        
+
         private void AttachOutcomes(Step source, Type dataType, WorkflowStep step)
-        {            
+        {
             if (!string.IsNullOrEmpty(source.NextStepId))
                 step.Outcomes.Add(new ValueOutcome() { ExternalNextStepId = $"{source.NextStepId}" });
-            
+
             foreach (var nextStep in source.SelectNextStep)
             {
                 Expression<Func<ExpandoObject, object, bool>> sourceExpr = (data, outcome) => _expressionEvaluator.EvaluateOutcomeExpression(nextStep.Value, data, outcome);
@@ -229,17 +229,34 @@ namespace Conductor.Domain.Services
                 });
             }
         }
-              
+
         private Type FindType(string name)
         {
-            name = name.Trim();
-            var result = Type.GetType($"WorkflowCore.Primitives.{name}, WorkflowCore", false, true);
 
+
+            name = name.Trim();
+            Type result = null;
+            try
+            {
+                result = Type.GetType($"WorkflowCore.Primitives.{name}, WorkflowCore", false, true);
+            }
+            catch { }
+            if (result != null)
+                return result;
+            try
+            {
+                result = Type.GetType($"Conductor.Steps.{name}, Conductor.Steps", false, true);
+            }
+            catch { }
             if (result != null)
                 return result;
 
-            result = Type.GetType($"Conductor.Steps.{name}, Conductor.Steps", false, true);
-
+            try
+            {
+                result = Type.GetType(name, false, true);
+            }
+            catch { }
+            
             if (result != null)
                 return result;
 
@@ -252,7 +269,7 @@ namespace Conductor.Domain.Services
         private Action<IStepBody, object, IStepExecutionContext> BuildScalarInputAction(KeyValuePair<string, object> input, PropertyInfo stepProperty)
         {
             var sourceExpr = System.Convert.ToString(input.Value);
-            
+
             void acn(IStepBody pStep, object pData, IStepExecutionContext pContext)
             {
                 var resolvedValue = _expressionEvaluator.EvaluateExpression(sourceExpr, pData, pContext);
@@ -277,13 +294,13 @@ namespace Conductor.Domain.Services
                             stepProperty.SetValue(pStep, resolvedValue);
                         else
                             stepProperty.SetValue(pStep, System.Convert.ChangeType(resolvedValue, stepProperty.PropertyType));
-                    }                    
+                    }
                 }
             }
             return acn;
         }
 
-        
+
 
         private Action<IStepBody, object, IStepExecutionContext> BuildObjectInputAction(KeyValuePair<string, object> input, PropertyInfo stepProperty)
         {
@@ -301,7 +318,7 @@ namespace Conductor.Domain.Services
                         if (prop.Name.StartsWith("@"))
                         {
                             var sourceExpr = prop.Value.ToString();
-                            var resolvedValue = _expressionEvaluator.EvaluateExpression(sourceExpr, pData, pContext);;
+                            var resolvedValue = _expressionEvaluator.EvaluateExpression(sourceExpr, pData, pContext); ;
                             subobj.Remove(prop.Name);
                             subobj.Add(prop.Name.TrimStart('@'), JToken.FromObject(resolvedValue));
                         }
@@ -315,6 +332,6 @@ namespace Conductor.Domain.Services
             }
             return acn;
         }
-        
+
     }
 }
