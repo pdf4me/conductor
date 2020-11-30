@@ -142,7 +142,7 @@ namespace Conductor
                 AccountKey = "RxbhMyOFnx1YjCwmnbpIdhc1GHlGzGUAOvq7ACpfntIpej6isqJo1W3W4mto+WN6FWuna/GtNcOVHDQo0lgplw==",
                 AccountName = "pdf4medev"
             };
-            services.AddPdf4meDalCore(dbConEf, storageConfig);
+            services.AddPdf4meDalCore(dbConEf, storageConfig, storageConfig);
 
         }
 
