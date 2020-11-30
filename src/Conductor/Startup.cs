@@ -103,7 +103,7 @@ namespace Conductor
             services.AddWorkflow(cfg =>
             {
                 cfg.UseSqlServer(dbConnectionStrSql, true, true);
-               // cfg.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
+                cfg.UseMongoDB("mongodb+srv://admin:logo12Q2@cluster0.o2vge.mongodb.net/pdf4me?retryWrites=true&w=majority", Configuration.GetValue<string>("DbName"));
                 
                 //if (!string.IsNullOrEmpty(redisConnectionStr))
                 //{
@@ -114,12 +114,13 @@ namespace Conductor
             services.ConfigureDomainServices();
             services.ConfigureScripting();
             services.AddSteps();
-            //services.UseMongoDB(dbConnectionStr, Configuration.GetValue<string>("DbName"));
-            
-            //if (string.IsNullOrEmpty(redisConnectionStr))
-            //    services.AddSingleton<IClusterBackplane, LocalBackplane>();
-            //else
-            //    services.AddSingleton<IClusterBackplane>(sp => new RedisBackplane(redisConnectionStr, "conductor", sp.GetService<IDefinitionRepository>(), sp.GetService<IWorkflowLoader>(), sp.GetService<ILoggerFactory>()));
+            services.UseMongoDB("mongodb+srv://admin:logo12Q2@cluster0.o2vge.mongodb.net/pdf4me?retryWrites=true&w=majority", Configuration.GetValue<string>("DbName"));
+
+            string redisConnectionStr = "";
+            if (string.IsNullOrEmpty(redisConnectionStr))
+                services.AddSingleton<IClusterBackplane, LocalBackplane>();
+            else
+                services.AddSingleton<IClusterBackplane>(sp => new RedisBackplane(redisConnectionStr, "conductor", sp.GetService<IDefinitionRepository>(), sp.GetService<IWorkflowLoader>(), sp.GetService<ILoggerFactory>()));
 
             var config = new MapperConfiguration(cfg =>
             {
