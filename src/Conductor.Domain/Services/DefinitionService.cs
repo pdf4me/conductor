@@ -5,6 +5,7 @@ using Conductor.Domain.Interfaces;
 using Conductor.Domain.Models;
 using Microsoft.Extensions.Logging;
 using SharpYaml.Serialization;
+using Pdf4meWf;
 
 namespace Conductor.Domain.Services
 {
