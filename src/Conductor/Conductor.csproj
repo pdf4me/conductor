@@ -27,10 +27,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Pdf4me.Common.AiLogging" Version="1.0.1130.1" />
     <PackageReference Include="Pdf4me.ServiceBus" Version="1.0.1130.1" />
-    <PackageReference Include="Pdf4meWf" Version="3.2.1129.2" />
-    <PackageReference Include="WorkflowCore" Version="3.2.1129.2" />
-    <PackageReference Include="WorkflowCore.Persistence.SqlServer" Version="3.2.1129.2" />
-    <PackageReference Include="WorkflowCore.Providers.Redis" Version="3.2.1129.2" />
+    <PackageReference Include="Pdf4meWf" Version="3.2.1130.1" />
+    <PackageReference Include="WorkflowCore" Version="3.2.1130.1" />
+    <PackageReference Include="WorkflowCore.Persistence.SqlServer" Version="3.2.1130.1" />
+    <PackageReference Include="WorkflowCore.Providers.Redis" Version="3.2.1130.1" />
   </ItemGroup>
 
   <ItemGroup>

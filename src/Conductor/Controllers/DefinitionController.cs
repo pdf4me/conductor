@@ -35,7 +35,7 @@ namespace Conductor.Controllers
         {
             var result = _service.GetDefinition(id);
 
-            if (result == null)
+            if (result == null) 
                 return NotFound();
 
             return Ok(result);
