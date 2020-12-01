@@ -236,27 +236,27 @@ namespace Conductor.Domain.Services
 
             name = name.Trim();
             Type result = null;
+
             try
             {
-                result = Type.GetType($"WorkflowCore.Primitives.{name}, WorkflowCore", false, true);
-            }
-            catch { }
-            if (result != null)
-                return result;
-            try
-            {
-                result = Type.GetType($"Conductor.Steps.{name}, Conductor.Steps", false, true);
-            }
-            catch { }
+                result = Type.GetType(name, false, true);
+            } catch { }
+
             if (result != null)
                 return result;
 
             try
             {
-                result = Type.GetType(name, false, true);
-            }
-            catch { }
-            
+                result = Type.GetType($"WorkflowCore.Primitives.{name}, WorkflowCore", false, true);
+            } catch { }
+
+            if (result != null)
+                return result;
+            try
+            {
+                result = Type.GetType($"Conductor.Steps.{name}, Conductor.Steps", false, true);
+            } catch { }
+
             if (result != null)
                 return result;
 
