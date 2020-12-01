@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WorkflowCore.Exceptions;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
+using Pdf4meWf;
 
 namespace Conductor.Storage.Services
 {
